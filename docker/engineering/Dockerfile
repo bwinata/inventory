@@ -1,3 +1,4 @@
+# Pull down base image: ubuntu 16.10
 FROM ubuntu:yakkety
 
 MAINTAINER Barry Winata <bwinata@sensity.com>
@@ -16,4 +17,4 @@ RUN apt-get install -y mosquitto
 #COPY /var/lib/ssl/sensity.client.crt /var/lib/ssl/sensity.client.crt
 #COPY /tmp/lib/ssl/sensity.client.key /tmp/lib/ssl/sensity.client.key
 
-CMD tail -F > /dev/null
+CMD service mosquitto start && service rsyslog start && service redis-server start && tail -f /dev/null

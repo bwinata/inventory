@@ -1,0 +1,11 @@
+version: '2'
+services:
+        engineering:
+                build: .
+                image: engineering
+                container_name: linux_embedded_dev
+                environment:
+                        - GOPATH=/root/Projects/sensity/code/golang
+                volumes:
+                        - $HOME/Projects:/root/Projects
+                tty: true
