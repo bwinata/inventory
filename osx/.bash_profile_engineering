@@ -1,0 +1,37 @@
+# ------------------------------------------------------------------------------
+# Name: bash_profile
+# Description:
+# 	This file gets invoked every time an interactive bash shell is created.
+#       It configures your environment for various tools and services i.e.
+#	go-lang toolchain, docker framework etc.
+#
+# Platform: OSX
+# 
+# Author: Barry Winata
+# Date  : 17 August 2017
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# Configure environment paths
+# ------------------------------------------------------------------------------
+export GOPATH=~/Projects/sensity/code/golang
+
+# ------------------------------------------------------------------------------
+# Configure docker framework
+# ------------------------------------------------------------------------------
+which docker-machine > /dev/null # Check if docker-machine exists first
+if [[ $? -eq 0 ]]; then 
+	docker_status=$(docker-machine status)
+	if [[ $docker_status == "Stopped" ]]; then
+		docker-machine start # Start docker-machine 
+		if [[ $? -ne 0 ]]; then 
+	       		echo "Docker machine could not start. Make sure it's installed correctly"
+		else
+			docker_status=$(docker-machine status) # Get status again after start - should be Running
+		fi
+	fi
+fi
+
+if [[ $docker_status == "Running" ]]; then
+	eval $(docker-machine env) # Export docker env variables
+fi
