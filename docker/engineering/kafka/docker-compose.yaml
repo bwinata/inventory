@@ -1,0 +1,56 @@
+version: '3'
+services:
+        zookeeper:
+                container_name: zookeeper_service
+                image: wurstmeister/zookeeper
+                ports:
+                        - "2181:2181"
+
+        kafka:
+                container_name: kafka_service
+                image: wurstmeister/kafka
+                environment:
+                        - KAFKA_ADVERTISED_HOST_NAME=192.168.99.100
+                        - KAFKA_CREATE_TOPICS=connectionstatus:1:1,config:1:1,sensor:1:1,api.reply.interface:1:1,ms.request.alert:1:1,ms.request.sse:1:1,ms.request.config:1:1,ms.request.sensor:1:1,ms.request.acl:1:1,node.command:1:1,corenode.command:1:1,login:1:1,alarm:1:1,alert:1:1,config.reply:1:1,dd.capeworker.in:1:1,dd.capeworker.out:1:1,parking.policy.req:1:1,parking.tag.req:1:1,parking.policygroup.req:1:1,ambient_light:1:1,driver_level:1:1,presence:1:1,trigger_lux:1:1
+                        - KAFKA_ZOOKEEPER_CONNECT=zookeeper_service:2181
+                ports:
+                        - "9092:9092"
+                volumes:
+                        - /var/run/docker.sock:/var/run/docker.sock
+                links:
+                        - zookeeper
+        bridge:
+                container_name: bridge_service
+                image: sensitydockerrepo/bridge-service:latest
+                environment:
+                  - bridge_type=withmqtt
+                  - kafka_service=kafka_service
+                  - kafka_port=9092
+                  - graphite_service=graphite_service
+                  - graphite_port=2003
+                  - fromkafka_consumer_group=bridge_service_group1$suffix
+                  - fromkafka_topic=node.command$suffix
+                  - tokafka_topic=login$suffix
+                  - mqtt_use_ssl=false
+                  - mqtt_service=mosquitto_service
+                  - mqtt_port=1883
+                  - mqtt_from_topic=v1/+/out/POST/loginReq/#
+                  - mqtt_clientid=bridge0$suffix
+                  - mqtt_to_topic=none
+                  - mqtt_buffer_size=1000
+                  - metrics_enabled=false
+                  - metrics_period_in_sec=300
+                  - akka_log_level=DEBUG
+                  - akka_stdout_log_level=DEBUG
+                  - build={{commit-hash}}
+                  - env_suffix=$suffix
+                links:
+                  - kafka
+                #   - graphite
+                  - mosquitto
+
+        mosquitto:
+                container_name: mosquitto_service
+                image: toke/mosquitto
+                ports:
+                        - "1883:1883"
