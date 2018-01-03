@@ -39,6 +39,7 @@ fi
 # Create aliases
 alias ga='git add'
 alias gc='git commit -m'
+alias gco='git checkout'
 alias gs='git status'
 alias gb='git branch'
 alias gp='git pull'
