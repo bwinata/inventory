@@ -19,36 +19,6 @@ services:
                         - /var/run/docker.sock:/var/run/docker.sock
                 links:
                         - zookeeper
-        bridge:
-                container_name: bridge_service
-                image: sensitydockerrepo/bridge-service:latest
-                environment:
-                  - bridge_type=withmqtt
-                  - kafka_service=kafka_service
-                  - kafka_port=9092
-                  - graphite_service=graphite_service
-                  - graphite_port=2003
-                  - fromkafka_consumer_group=bridge_service_group1$suffix
-                  - fromkafka_topic=node.command$suffix
-                  - tokafka_topic=login$suffix
-                  - mqtt_use_ssl=false
-                  - mqtt_service=mosquitto_service
-                  - mqtt_port=1883
-                  - mqtt_from_topic=v1/+/out/POST/loginReq/#
-                  - mqtt_clientid=bridge0$suffix
-                  - mqtt_to_topic=none
-                  - mqtt_buffer_size=1000
-                  - metrics_enabled=false
-                  - metrics_period_in_sec=300
-                  - akka_log_level=DEBUG
-                  - akka_stdout_log_level=DEBUG
-                  - build={{commit-hash}}
-                  - env_suffix=$suffix
-                links:
-                  - kafka
-                #   - graphite
-                  - mosquitto
-
         mosquitto:
                 container_name: mosquitto_service
                 image: toke/mosquitto

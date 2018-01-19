@@ -1,5 +1,5 @@
-# Pull down base image: ubuntu 16.10
-FROM ubuntu:yakkety
+# Pull down base image: ubuntu 16.04
+FROM ubuntu:xenial
 
 MAINTAINER Barry Winata <barrywinata1@gmail.com>
 
