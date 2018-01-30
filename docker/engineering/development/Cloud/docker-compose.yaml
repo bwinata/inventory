@@ -24,3 +24,8 @@ services:
                 image: toke/mosquitto
                 ports:
                         - "1883:1883"
+        cassandra:
+                container_name: cassandra_service
+                image: cassandra:2.2.9
+                volumes:
+                        - /Users/bwinata/cassandra:/var/lib/cassandra
