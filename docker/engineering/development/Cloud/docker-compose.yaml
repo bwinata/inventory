@@ -27,5 +27,7 @@ services:
         cassandra:
                 container_name: cassandra_service
                 image: cassandra:2.2.9
-                volumes:
-                        - /Users/bwinata/cassandra:/var/lib/cassandra
+                ports:
+                        - "9042:9042"
+                # volumes:
+                #         - /Users/bwinata/cassandra:/var/lib/cassandra
