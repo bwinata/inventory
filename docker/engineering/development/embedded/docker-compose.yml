@@ -9,3 +9,9 @@ services:
                 volumes:
                         - $HOME/Projects:/root/Projects
                 tty: true
+        # cloud:
+        #         image: sensitydockerrepo/api-base:1.0
+        #         container_name: cloud_dev
+        #         volumes:
+        #                 - $HOME/Projects:/root/Projects
+        #         tty: true

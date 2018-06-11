@@ -13,10 +13,14 @@ RUN apt-get install -y vim
 RUN apt-get install -y redis-server
 RUN apt-get install -y mosquitto
 RUN apt-get install -y dbus
+RUN apt-get install -y lsb-core
+RUN apt-get install -y python-dev
+RUN apt-get install -y python-pip
+
+RUN pip install pyinstaller
 
 # Create directories
-RUN mkdir -p /var/lib/ssl
-RUN mkdir -p /tmp/lib/ssl
+RUN mkdir -p /var/lib/ssl/cas
 
 # Intialise services at container startup
 CMD service mosquitto start && service rsyslog start && service redis-server start && service dbus start && tail -f /dev/null
