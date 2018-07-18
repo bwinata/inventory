@@ -7,8 +7,9 @@ MAINTAINER Barry Winata <barrywinata1@gmail.com>
 RUN apt-get update
 
 # Install a bunch of stuff
+RUN apt-get install -y software-properties-common
 RUN apt-get install -y rsyslog
-RUN apt-get install -y golang
+RUN apt-get install -y golang-1.10-go
 RUN apt-get install -y vim
 RUN apt-get install -y redis-server
 RUN apt-get install -y mosquitto
